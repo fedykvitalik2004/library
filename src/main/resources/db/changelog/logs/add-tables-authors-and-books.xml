@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="1733476684390-1" author="vfedyk">
+        <createTable tableName="authors">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(300)"/>
+        </createTable>
+        <createTable tableName="books">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(500)"/>
+            <column name="genre" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pages_count" type="smallint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="books" baseColumnNames="author_id" constraintName="FK_books_author_id"
+                                 referencedTableName="authors"
+                                 referencedColumnNames="id"/>
+        <createTable tableName="borrowed_books">
+            <column name="book_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="borrow_date" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+            <column name="return_date" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="borrowed_books" baseColumnNames="book_id" constraintName="FK_borrowed_books_book_id"
+                                 referencedTableName="books"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="borrowed_books" baseColumnNames="user_id" constraintName="FK_borrowed_books_user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
